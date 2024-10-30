@@ -18,18 +18,21 @@ class TestInterfazAWS(unittest.TestCase):
     def setUp(self):
         self.session_id = "test_session"
         self.cpu_id = "test_cpu"
+        self.sede_id = "UADER-FCyT-IS2"
         self.interfaz = InterfazAWS(self.session_id, self.cpu_id)
 
     def test_valid_access(self):
-        response = self.interfaz.consultar_datos_sede("UADER-FCyT-IS2")
+        response = self.interfaz.consultar_datos_sede(self.session_id, self.cpu_id, self.sede_id)
         self.assertIn("datos_sede", response, "Error en el acceso correcto a datos de sede")
 
     def test_invalid_key_access(self):
-        response = self.interfaz.consultar_datos_sede("clave_incorrecta")
+        invalid_sede_id = "clave_incorrecta"
+        response = self.interfaz.consultar_datos_sede(self.session_id, self.cpu_id, invalid_sede_id)
         self.assertIn("error", response, "No se manejó correctamente el acceso con clave incorrecta")
 
     def test_missing_arguments(self):
-        response = self.interfaz.consultar_datos_sede("")
+        # En este caso, se pasa un ID de sede vacío para probar el manejo de argumentos faltantes
+        response = self.interfaz.consultar_datos_sede(self.session_id, self.cpu_id, "")
         self.assertIn("error", response, "No se manejó correctamente el acceso con argumentos faltantes")
 
 if __name__ == "__main__":

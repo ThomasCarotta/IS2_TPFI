@@ -22,19 +22,19 @@ class TestInterfazAWS(unittest.TestCase):
 
     def test_consultar_datos_sede(self):
         """Prueba consultar datos de la sede en CorporateData."""
-        response = json.loads(self.interfaz.consultar_datos_sede(self.sede_id))
+        response = json.loads(self.interfaz.consultar_datos_sede(self.session_id, self.cpu_id, self.sede_id))
         self.assertIn("datos_sede", response)
         self.assertIn("Domicilio", response["datos_sede"])
 
     def test_consultar_cuit(self):
         """Prueba consultar CUIT de la sede en CorporateData."""
-        response = json.loads(self.interfaz.consultar_cuit(self.sede_id))
+        response = json.loads(self.interfaz.consultar_cuit(self.session_id, self.cpu_id, self.sede_id))
         self.assertIn("cuit", response)
         self.assertIn("CUIT", response["cuit"])
 
     def test_generar_id_secuencia(self):
         """Prueba generar un nuevo ID de secuencia en CorporateData."""
-        response = json.loads(self.interfaz.generar_id_secuencia(self.sede_id))
+        response = json.loads(self.interfaz.generar_id_secuencia(self.session_id, self.cpu_id, self.sede_id))
         self.assertIn("nuevo_id_secuencia", response)
         self.assertIsInstance(response["nuevo_id_secuencia"], int)
 
@@ -53,8 +53,8 @@ class TestInterfazAWS(unittest.TestCase):
     def test_invalid_sede_id(self):
         """Prueba manejar un ID de sede inválido."""
         invalid_id = "INVALID_ID"
-        response = json.loads(self.interfaz.consultar_datos_sede(invalid_id))
-        self.assertIn("error", response.get("datos_sede", {}))  # Verifica "error" dentro de "datos_sede"
+        response = json.loads(self.interfaz.consultar_datos_sede(self.session_id, self.cpu_id, invalid_id))
+        self.assertIn("error", response.get("datos_sede", {}))
 
 
 if __name__ == "__main__":

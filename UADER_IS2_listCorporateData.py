@@ -2,6 +2,9 @@ import boto3
 import json
 from decimal import Decimal
 
+# Retorna una estructura JSON con todos los campos de la tabla
+# CorporateData
+
 def decimal_default(obj):
     if isinstance(obj, Decimal):
         return float(obj)  # O usa int(obj) si todos los valores son enteros
@@ -12,10 +15,10 @@ def listar_corporate_data():
     table = dynamodb.Table('CorporateData')
 
     try:
-        response = table.scan()  # Escanea todos los elementos en la tabla
+        response = table.scan()  # Scan a todos los elementos de la tabla
         data = response.get('Items', [])
         
-        # Convertir todos los elementos en 'data' utilizando la función decimal_default
+        # Convierte todos los elementos en 'data' utilizando la función decimal_default
         return json.dumps({"corporate_data": data}, indent=4, default=decimal_default)
     except Exception as e:
         return json.dumps({"error": f"Error al acceder a la base de datos: {e}"})
